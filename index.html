@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Xiaomi IMEI Checker – تسجيل الدخول</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --orange: #FF6900;
+      --orange-light: #FF8C38;
+      --dark: #0A0A0A;
+      --darker: #050505;
+      --card: #111111;
+      --border: rgba(255,105,0,0.25);
+      --text: #F0F0F0;
+      --muted: #888;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Cairo', sans-serif;
+      background: var(--darker);
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      position: relative;
+    }
+
+    /* Animated background grid */
+    .bg-grid {
+      position: fixed;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(255,105,0,0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,105,0,0.04) 1px, transparent 1px);
+      background-size: 40px 40px;
+      animation: gridMove 20s linear infinite;
+      z-index: 0;
+    }
+    @keyframes gridMove {
+      0%   { background-position: 0 0; }
+      100% { background-position: 40px 40px; }
+    }
+
+    /* Glowing orbs */
+    .orb {
+      position: fixed;
+      border-radius: 50%;
+      filter: blur(80px);
+      opacity: 0.15;
+      animation: pulse 6s ease-in-out infinite;
+      z-index: 0;
+    }
+    .orb-1 { width: 400px; height: 400px; background: var(--orange); top: -100px; left: -100px; }
+    .orb-2 { width: 300px; height: 300px; background: #FF3D00; bottom: -80px; right: -80px; animation-delay: 3s; }
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); opacity: 0.15; }
+      50%       { transform: scale(1.2); opacity: 0.22; }
+    }
+
+    .login-card {
+      position: relative;
+      z-index: 10;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 48px 40px;
+      width: 100%;
+      max-width: 420px;
+      box-shadow: 0 0 60px rgba(255,105,0,0.08), 0 30px 60px rgba(0,0,0,0.6);
+      animation: cardIn 0.6s cubic-bezier(0.16,1,0.3,1) both;
+    }
+    @keyframes cardIn {
+      from { opacity: 0; transform: translateY(30px) scale(0.97); }
+      to   { opacity: 1; transform: translateY(0) scale(1); }
+    }
+
+    /* Xiaomi Logo */
+    .logo-area {
+      text-align: center;
+      margin-bottom: 36px;
+    }
+    .mi-logo {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      margin-bottom: 12px;
+    }
+    .mi-icon {
+      width: 52px;
+      height: 52px;
+      background: var(--orange);
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 26px;
+      font-weight: 900;
+      color: #fff;
+      letter-spacing: -2px;
+      box-shadow: 0 0 30px rgba(255,105,0,0.5);
+      animation: glow 2s ease-in-out infinite;
+    }
+    @keyframes glow {
+      0%, 100% { box-shadow: 0 0 20px rgba(255,105,0,0.4); }
+      50%       { box-shadow: 0 0 40px rgba(255,105,0,0.8); }
+    }
+    .mi-text {
+      font-size: 28px;
+      font-weight: 900;
+      color: #fff;
+      letter-spacing: 1px;
+    }
+    .mi-text span { color: var(--orange); }
+    .logo-subtitle {
+      font-size: 13px;
+      color: var(--muted);
+      letter-spacing: 3px;
+      text-transform: uppercase;
+    }
+
+    .divider {
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--border), transparent);
+      margin-bottom: 32px;
+    }
+
+    label {
+      display: block;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--muted);
+      margin-bottom: 8px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+    .input-wrap {
+      position: relative;
+      margin-bottom: 20px;
+    }
+    .input-wrap input {
+      width: 100%;
+      background: #1A1A1A;
+      border: 1px solid #2A2A2A;
+      border-radius: 10px;
+      padding: 14px 16px;
+      color: var(--text);
+      font-family: 'Cairo', sans-serif;
+      font-size: 15px;
+      transition: border-color 0.2s, box-shadow 0.2s;
+      outline: none;
+      direction: ltr;
+    }
+    .input-wrap input:focus {
+      border-color: var(--orange);
+      box-shadow: 0 0 0 3px rgba(255,105,0,0.12);
+    }
+    .input-wrap input::placeholder { color: #444; }
+
+    .btn-login {
+      width: 100%;
+      padding: 15px;
+      background: linear-gradient(135deg, var(--orange), var(--orange-light));
+      border: none;
+      border-radius: 10px;
+      color: #fff;
+      font-family: 'Cairo', sans-serif;
+      font-size: 16px;
+      font-weight: 700;
+      cursor: pointer;
+      margin-top: 8px;
+      position: relative;
+      overflow: hidden;
+      transition: transform 0.15s, box-shadow 0.2s;
+      letter-spacing: 1px;
+    }
+    .btn-login:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 30px rgba(255,105,0,0.4);
+    }
+    .btn-login:active { transform: translateY(0); }
+    .btn-login .btn-shine {
+      position: absolute;
+      top: 0; left: -100%;
+      width: 60%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+      animation: shine 3s infinite;
+    }
+    @keyframes shine {
+      0%   { left: -100%; }
+      20%  { left: 120%; }
+      100% { left: 120%; }
+    }
+
+    .error-msg {
+      display: none;
+      text-align: center;
+      margin-top: 14px;
+      padding: 10px;
+      background: rgba(255,60,0,0.1);
+      border: 1px solid rgba(255,60,0,0.3);
+      border-radius: 8px;
+      font-size: 13px;
+      color: #FF6060;
+      animation: shake 0.4s ease;
+    }
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      25%       { transform: translateX(-6px); }
+      75%       { transform: translateX(6px); }
+    }
+
+    .footer-note {
+      text-align: center;
+      margin-top: 24px;
+      font-size: 12px;
+      color: #333;
+    }
+  </style>
+</head>
+<body>
+  <div class="bg-grid"></div>
+  <div class="orb orb-1"></div>
+  <div class="orb orb-2"></div>
+
+  <div class="login-card">
+    <div class="logo-area">
+      <div class="mi-logo">
+        <div class="mi-icon">Mi</div>
+        <div class="mi-text">Xiaomi <span>IMEI</span></div>
+      </div>
+      <div class="logo-subtitle">Checker Portal</div>
+    </div>
+    <div class="divider"></div>
+
+    <label for="username">اسم المستخدم</label>
+    <div class="input-wrap">
+      <input type="text" id="username" placeholder="أدخل اسم المستخدم" autocomplete="off"/>
+    </div>
+
+    <label for="password">كلمة المرور</label>
+    <div class="input-wrap">
+      <input type="password" id="password" placeholder="أدخل كلمة المرور"/>
+    </div>
+
+    <button class="btn-login" onclick="doLogin()">
+      <span class="btn-shine"></span>
+      دخول
+    </button>
+    <div class="error-msg" id="errMsg">❌ اسم المستخدم أو كلمة المرور غير صحيحة</div>
+
+    <div class="footer-note">© 2025 Xiaomi IMEI Checker</div>
+  </div>
+
+  <script>
+    function doLogin() {
+      const u = document.getElementById('username').value.trim();
+      const p = document.getElementById('password').value.trim();
+      const err = document.getElementById('errMsg');
+      if (u === 'mohamed' && p === 'mahmah') {
+        sessionStorage.setItem('auth', '1');
+        window.location.href = 'checker.html';
+      } else {
+        err.style.display = 'block';
+        err.style.animation = 'none';
+        void err.offsetWidth;
+        err.style.animation = 'shake 0.4s ease';
+      }
+    }
+    document.addEventListener('keydown', e => { if (e.key === 'Enter') doLogin(); });
+  </script>
+</body>
+</html>
